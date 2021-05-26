@@ -6,14 +6,17 @@ The main file is main.m
 
 The procedure generates the measurements with the associated probabilities.
 
-**Perform main.m
+***Perform main.m
 
 - Enter a number in {1,2} with keyboard, 1 represents OGM-Version 1, and 2 represents OGM-Version 2.
 - Enter a string to represent the Hamiltonian you wish to perform. (H2_4jw means you wish to perform H2 molecule which has 4 qubits and encoded by jw.)
 
 File needed before performing main.m
 
-(1) Folder 1: Hamiltonian, we need all of the Hamiltonian in this folder (Name of the Hamiltonian e.g.: H2_4jw.txt). The Hamiltonian can be obtained from https://github.com/charleshadfield/variances.
+(1) Folder 1: Hamiltonian, we need all of the Hamiltonian in this folder (Name of the Hamiltonian e.g.: H2_4jw.txt). 
+
+The Hamiltonian can be obtained from https://github.com/charleshadfield/variances.
+
 ***Note here we have different representation for the Hamiltonians.
 
 We list the Hamiltonian for H2_4 has an example.
