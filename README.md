@@ -21,7 +21,7 @@ The Hamiltonian can be obtained from https://github.com/charleshadfield/variance
 
 We list the Hamiltonian for H2_4 has an example.
 
-``
+```
 0.17218393261915566 3 0 0 0 
 
 -0.2257534922240248 0 3 0 0 
@@ -49,7 +49,7 @@ We list the Hamiltonian for H2_4 has an example.
 0.17464343068300447 0 3 0 3 
 
 0.1209126326177663 0 0 3 3 
-``
+```
 
 The first column represents the associated coefficients, and the last 4 colums represent the observable. 0/1/2/3 represents I/X/Y/Z.
 
