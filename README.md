@@ -38,7 +38,7 @@ We list the Hamiltonian for H2_4 has an example.
 0.1209126326177663 0 0 3 3 
 ```
 
-The first column represents the associated coefficients, and the last 4 colums represent the observable. 0/1/2/3 represents I/X/Y/Z.
+The first column represents the associated coefficients, and the last 4 colums represent the observable. 0/1/2/3 represents I/X/Y/Z. We did not contain the $I$ term, since it does not influence the optimization process.
 
 (2) Folder 2: CutSet, to save the generated measurements and the associated probabilities. The first $n$-rows in a column represents a measurement, and the last row represents the associated probability.
 
