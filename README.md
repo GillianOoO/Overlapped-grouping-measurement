@@ -4,7 +4,7 @@ This is a matlab version for overlapped grouping measurement algorithm.
 
 The main file is main.m
 
-The procedure generates the measurements with the associated probabilities.
+The procedure generates the measurements and the associated probabilities.
 
 ***Perform main.m
 
