@@ -1,24 +1,20 @@
-function [diagonal_var] = main_CUTGBCSV2(file)
-%% for this version of GBCS, suppose we have s intervals in total.
+function [timeSpend] = main_CUTOGMV2(file)
+%% for this version of OGM, suppose we have s intervals in total.
 %% we only add the observ in interval k to 2^(s-k) number of different sets.
 
 MAX_step = 10;
 
-global Nq m observ meas len pr
+global Nq m observ meas len pr T
 %% read observables
 %%str = '/Users/wubujiao/Documents/MATLAB/ShadowTomography/Hamiltonian/';
 str = 'Hamiltonian/';
-str_set = 'CutSet/GBCSV3_';
+str_set = 'CutSet/OGM_';
 strF = strcat(str, file);
 strS = strcat(str_set, file);
-display(strF);
 observ = load(strF);
 
 [m,Nq] = size(observ);
 Nq = Nq - 1;
-
-format = 'The number of photons: %d, the number of observables: %d\n';
-fprintf(format, Nq, m);
 
 
 %% sort_observables by its weight.
@@ -31,7 +27,7 @@ min_weight = abs(observ(m,1));
 %%Strategy: from 1-->l, generate the commuted set for Q^(j) for 1<j<l,
 %%where l<min{all observ are added, m/sqrt(Nq)}
  added = zeros(1, m);
- count_observ = 0; % end the loop if count_observ == m.
+
  cur = 0; %% current set number.
     
 while 1
@@ -107,7 +103,6 @@ while 1
 end
 
 len = cur;
-fprintf('the number of sets: %d\n', len);
 pr = pr(1:len);
 sum_pr = 0;
 for j = 1 : len
@@ -117,9 +112,11 @@ for j = 1 : len
     pr(j) = pr(j)/sum_pr;
 end
 
+format = 'The number of sets: %d.\n';
+fprintf(format, len);
+
 tic
 exitflag = 0;
-T = 1000; %% if the result is not good, we should amplify this.
 for step = 1 : MAX_step
     %%sorting the meas with probability descending.
     measAndP(1:Nq,1:len) = meas(:,1:len);
@@ -133,24 +130,25 @@ for step = 1 : MAX_step
 %        break; 
 %     end
     [new_len, new_pr] = CutMoreSet(pr, T);%%cutdown
-    if variance(new_pr) < variance(pr)
+    if variance(new_pr, observ, meas, T) < variance(pr, observ, meas, T)
         pr = new_pr;
         len = new_len;
     elseif exitflag == 1
        break; 
     end
     meas = meas(:,1:len);
-    format = '%d-th round: The number of sets: %d.\n';
-    fprintf(format, step, len);
+
     upper_B = min(10*step, 20);
-    [pr, diagonal_var, exitflag] = OptDiagVar(pr, upper_B);
+    [pr, diagonal_var, exitflag] = OptDiagVar(pr, upper_B,  observ, meas, T);
+    format = '%d-th round: The number of sets: %d, diag_variance: %f.\n';
+    fprintf(format, step, len, diagonal_var);
 end
 if exitflag == 0
-    [pr, diagonal_var, exitflag] = OptDiagVar(pr, 100);
+    [pr, diagonal_var, exitflag] = OptDiagVar(pr, 100,  observ, meas, T);
 end
 
 timeSpend = toc;
-fprintf('Time cost:%f; %d rounds in total; Optimal diagonal var: %f\n', timeSpend, step, diagonal_var);
+%fprintf('Time cost:%f; %d rounds in total; Optimal diagonal var: %f\n', timeSpend, step, diagonal_var);
 
 save(strS,'meas','pr','-ascii');
 

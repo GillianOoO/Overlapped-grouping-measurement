@@ -1,10 +1,10 @@
-function [var] = variance(pr)
+function [var] = variance(pr,observ, meas, T)
 
- global observ meas
+ %global observ meas T
 
  len = length(pr);
  
- T = 1000;
+
  
  [m, Nq] = size(observ); 
  Nq = Nq - 1;

@@ -11,6 +11,9 @@ The procedure generates the measurements and the associated probabilities.
 - Enter a number in {1,2} with keyboard, 1 represents OGM-Version 1, and 2 represents OGM-Version 2.
 - Enter a string to represent the Hamiltonian you wish to perform. (H2_4jw means you wish to perform H2 molecule which has 4 qubits and encoded by jw.)
 
+***Note***
+T is the number of measurements, the loss function is associated with T, hence we should not fix T for different size of samples. If one do not want to adjust T, please give an large number  which is close to infinity.
+
 File needed before performing main.m
 
 (1) Folder 1: Hamiltonian, we need all of the Hamiltonian in this folder (Name of the Hamiltonian e.g.: H2_4jw.txt). 
@@ -40,7 +43,7 @@ We list the Hamiltonian for H2_4 has an example.
 
 The first column represents the associated coefficients, and the last 4 colums represent the observable. 0/1/2/3 represents I/X/Y/Z. We did not contain the $I$ term, since it does not influence the optimization process.
 
-(2) Folder 2: CutSet, to save the generated measurements and the associated probabilities. The first $n$-rows in a column represents a measurement, and the last row represents the associated probability.
+(2) Folder 2: CutSet, the output files would be saved automatically in this folder, the file contains the generated measurements and the associated probabilities. 
+The first $n$-rows in a column represents a measurement, and the last row represents the associated probability in the file.
 
 ***Note: We do not need the associated ground state for the Hamiltonian in the optimization phase.
-

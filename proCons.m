@@ -1,7 +1,7 @@
-function [c,ceq] = proCons(pr)
+function [c,ceq] = proCons(pr, len)
 
 % len = size(pr,2);
-global len
+% global len
 
 ceq = -1;
 

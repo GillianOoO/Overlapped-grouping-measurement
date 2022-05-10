@@ -1,18 +1,20 @@
 %% author: bujiao wu
 
-function [diagonal_var] = main_CutOGM(file)
+function [timeSpend] = main_CutOGM(file)
 
 
 MAX_step = 10;
-global Nq m observ meas len pr
+global Nq m observ meas len pr T
 
 %% read observables
 %%str = '/Users/wubujiao/Documents/MATLAB/ShadowTomography/Hamiltonian/';
 str = 'Hamiltonian/';
 str_set = 'CutSet/OGM_'; %write the generated set information into this file. 
 strF = strcat(str, file);
+
 strS = strcat(str_set, file);
-display(strF);
+
+
 observ = load(strF);
 
 [m,Nq] = size(observ);
@@ -97,7 +99,7 @@ end
 tic
 exitflag = 0;
 diag_new = 0;
-T = 1000; %% if the result is not good, we should amplify this.
+ %% if the result is not good, we should amplify this.
 for step = 1 : MAX_step
     %%sorting the meas with probability descending.
     measAndP(1:Nq,1:len) = meas(:,1:len);
@@ -111,14 +113,14 @@ for step = 1 : MAX_step
 % % % %        break; 
 % % % %     end
    [new_len, new_pr] = CutMoreSet(pr, T);%%cutmore
-    if variance(new_pr) < variance(pr)
+    if variance(new_pr,observ, meas, T) < variance(pr,observ, meas, T)
         pr = new_pr;
         len = new_len;
         meas = meas(:,1:len);
     elseif exitflag == 1
        break; 
     end
-    [pr, diagonal_var, exitflag] = OptDiagVar(pr, 10 * step);
+    [pr, diagonal_var, exitflag] = OptDiagVar(pr, 10 * step, observ, meas, T );
     if abs(diag_new - diagonal_var)<1e-3
        break; 
     end
@@ -127,11 +129,11 @@ for step = 1 : MAX_step
     fprintf(format, step, len, diagonal_var);
 end
 if exitflag == 0
-    [pr, diagonal_var, exitflag] = OptDiagVar(pr, 100);
+    [pr, diagonal_var,exitflag] = OptDiagVar(pr, 100, observ, meas, T );
 end
 
 timeSpend = toc;
-fprintf('CutOGM, time cost:%f; %d rounds in total; Optimal diagonal var: %f\n', timeSpend, step, diagonal_var);
+%fprintf('CutOGM, time cost:%f; %d rounds in total; Optimal diagonal var: %f\n', timeSpend, step, diagonal_var);
 
 save(strS,'meas','pr','-ascii');
 
